@@ -38,16 +38,16 @@ public class homePageImpl extends Utility implements homePage {
 	By preOrderAndForthcoming = By.xpath("//div/div/p[contains(text(),\"What does 'Preorder' or 'Forthcoming' mean?\")]");
 	By helpfulYesButton = By.xpath("//div/span[contains(text(),'Was this helpful?')]/following-sibling::div/button[contains(text(),'Yes')]");
 	By buttonPlaceOrder = By.xpath("//button/span[contains(text(),'Place Order')]");
-	
-	
+
+
 
 	@Override
 	public void launchURL(String URL) throws Exception {
-		
+
 		try{
-		driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
-		driver.get(URL);
-		driver.manage().window().maximize();
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			driver.get(URL);
+			driver.manage().window().maximize();
 		}
 		catch(Exception e ){
 			e.printStackTrace();
@@ -61,7 +61,7 @@ public class homePageImpl extends Utility implements homePage {
 		utility.waitForPageLoad(driver,closeLoginPopup);
 		driver.findElement(closeLoginPopup).click();
 	}
-	
+
 	@Override
 	public void closethePopup1() {
 		utility.waitForPageLoad(driver,closeLoginPopup);
@@ -69,121 +69,110 @@ public class homePageImpl extends Utility implements homePage {
 		WebElement ele = driver.findElement(closeLoginPopup);
 		action.moveToElement(ele).click().perform();
 	}
-	
+
 	@Override
 	public void goToSection(String section) {
-		
+
 		String xpath = "//span[contains(text(),'**')]";
-		
-		/*String replacedXpath = xpath.replace("**", section);
-		By finalXpath = By.xpath(replacedXpath);
-		driver.findElement(finalXpath).click();*/
-		
+
+
 		driver.findElement(xpathAccordingToUserInputValue(xpath,section)).click();
 	}
 
 	@Override
 	public void shopByScreenSize(String size) {
-		
+
 		String xpath = "//li[contains(text(),'Shop by Screen Size')]/following::li/a[contains(text(),'**')]";
-		/*String replacedXpath = xpath.replace("**", subSection);
-		By finalXpath = By.xpath(replacedXpath);
-		utility.waitForPageLoad(driver,finalXpath);
-		driver.findElement(finalXpath).click();*/
 		utility.waitForPageLoad(driver,xpathAccordingToUserInputValue(xpath,size));
 		driver.findElement(xpathAccordingToUserInputValue(xpath,size)).click();
-		
-		
+
+
 	}
 
 	@Override
 	public void priceRangeSelect(String min, String max) throws InterruptedException {
-		
+
 		WebElement eleMin = driver.findElement(minPriceRange);
 		WebElement eleMax = driver.findElement(maxPriceRange);
 		utility.selectDropDownByValue(eleMin,min);
 		utility.waitForPageLoad(driver,maxPriceRange);
 		TimeUnit.SECONDS.sleep(3);
 		utility.selectDropDownByValue(eleMax,max);
-		
+
 	}
-	
+
 	@Override
 	public void resolutionSelect() throws InterruptedException {
-		
+
 		JavascriptExecutor jse = (JavascriptExecutor)driver;
 		jse.executeScript("window.scrollBy(0,1001)");
-		
+
 		driver.findElement(buttonResolution).click();
 		driver.findElement(checkBoxUltra).click();
-		/*if(!utility.isElementSelected(driver, checkBoxUltra)){
-			driver.findElement(checkBoxUltra).click();
-		}*/
-		
+
 	}
-	
-	
+
+
 
 	@Override
 	public void getTotalNumberOfItemsShowing() throws InterruptedException {
 		TimeUnit.SECONDS.sleep(3);
-		//driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
 		WebElement ele = driver.findElement(totalNumberOfProducts);
 		String totalNumberProducts = ele.getText();
 		System.out.println(totalNumberProducts);
 	}
-	
+
 	@Override
 	public void addThreeTVtoCompare() throws NoSuchElementException {
 		List<WebElement> li = new ArrayList<WebElement>(); 
 		li = driver.findElements(By.xpath("//label/span[contains(text(),'Add to Compare')]/../preceding-sibling::span/div/label/div"));
 		int size = li.size();
-		
+
 		if (size>=3){
 			for (int i=0;i<3;i++){
 				li.get(i).click();
 			}
 		}
-			
-		
+
+
 	}
-	
+
 	@Override
 	public void compareItems() throws Exception {
 		if(utility.isElementPresent(driver, compareButton)){
 			driver.findElement(compareButton).click();
-			//utility.getscreenshot(driver,"CompareScreenShot");
+			utility.getscreenshot(driver,"CompareScreenShot");
 		}
 	}
 
 	public static String addCommasToNumericString(String digits) {
-	    String result = "";
-	    for (int i=1; i <= digits.length(); ++i) {
-	        char ch = digits.charAt(digits.length() - i);
-	        if (i % 3 == 1 && i > 1) {
-	            result = "," + result;
-	        }
-	        result = ch + result;
-	    }
+		String result = "";
+		for (int i=1; i <= digits.length(); ++i) {
+			char ch = digits.charAt(digits.length() - i);
+			if (i % 3 == 1 && i > 1) {
+				result = "," + result;
+			}
+			result = ch + result;
+		}
 
-	    return result;
+		return result;
 	}
-	
-	
+
+
 	public void selectAddToCartOfTheLowestAmount(int i) throws Exception {
 		List<WebElement> li = new ArrayList<WebElement>();
-			li = driver.findElements(selectAddToCartOfTheLowestAmount);
-			if (li.size()>=1){
-				for (int m = 0; m<li.size(); m++ ){
-					if (m == i){
-						li.get(m).click();
-					}
+		li = driver.findElements(selectAddToCartOfTheLowestAmount);
+		if (li.size()>=1){
+			for (int m = 0; m<li.size(); m++ ){
+				if (m == i){
+					li.get(m).click();
 				}
 			}
+		}
 	}
-	
 
-	
+
+
 	@Override
 	public void selectMinimumPriceFromCompareList() throws Exception {
 		List<WebElement> li = new ArrayList<WebElement>(); 
@@ -191,11 +180,10 @@ public class homePageImpl extends Utility implements homePage {
 		List<String> StringPrices = new ArrayList<String>();
 		List<String> CommaStringPrices = new ArrayList<String>();
 		li = driver.findElements(priceList);
-		//int size = li.size();
 		li.remove(0);
 		int i = 0;
-		
-		
+
+
 		for(WebElement ele : li){
 			String str = ele.getText();
 			String fstr = str.substring(1);
@@ -204,29 +192,26 @@ public class homePageImpl extends Utility implements homePage {
 			Integer integer = Integer.parseInt(ffstr);
 			prices.add(integer);
 		}
-		
+
 		Collections.sort(prices);
-		//System.out.println(prices.get(0));
 		String commaValue = addCommasToNumericString(prices.get(0).toString());
-		//System.out.println(commaValue);
-		
+
 		for (String StrPrices : StringPrices ){
 			CommaStringPrices.add((addCommasToNumericString(StrPrices)));
 		}
-		
-		
+
+
 		for (String sttt : CommaStringPrices){
 			if(sttt.contains(commaValue)){
-			i = CommaStringPrices.indexOf(sttt);
-			//System.out.println("The Postion is: " + (i));
+				i = CommaStringPrices.indexOf(sttt);
 			}
 		}
-		
+
 		selectAddToCartOfTheLowestAmount(i);
 	}
 
-	
-	
+
+
 	@Override
 	public void clickOnHelpCenter() throws Exception {
 		TimeUnit.SECONDS.sleep(5);
@@ -234,30 +219,29 @@ public class homePageImpl extends Utility implements homePage {
 		waitForPageLoad(driver, clickOnHelpCenter);
 		String parentWindow = driver.getWindowHandle();
 		driver.findElement(clickOnHelpCenter).click();
-		//driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
 		utility.checkPageIsReady(driver);
-		
+
 		Set<String> windows = new HashSet<String>();
 		windows = driver.getWindowHandles();
-		
+
 		for (String childWindow : windows){
 			if (!childWindow.equals(parentWindow)){
 				driver.switchTo().window(childWindow);
 			}
 		}
-		
+
 		utility.checkPageIsReady(driver);
 		driver.findElement(preOrderAndForthcoming).click();
-		
+
 		if(utility.isElementPresent(driver, helpfulYesButton)){
 			driver.findElement(helpfulYesButton).click();
 		}
-		
+
 		driver.close();
 		driver.switchTo().window(parentWindow);
 		driver.navigate().refresh();
 	}
-	
+
 	@Override
 	public void clickButtonPlaceOrder() throws Exception {
 		utility.checkPageIsReady(driver);
@@ -266,5 +250,5 @@ public class homePageImpl extends Utility implements homePage {
 			utility.checkPageIsReady(driver);
 		}
 	}
-	
+
 }
